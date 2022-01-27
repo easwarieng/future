@@ -1,0 +1,30 @@
+import cv2
+import matplotlib.pyplot as plt
+img = cv2.imread("mugi.jpeg")
+cv2.imshow("original image",img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+grey = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+invert_img = cv2.bitwise_not(grey)
+blur_img = cv2.GaussianBlur(invert_img,(111,111),0)
+inblur_img = cv2.bitwise_not(blur_img)
+sketch = cv2.divide(grey,inblur_img,scale = 256.0)
+cv2.imwrite('sketch2.png',sketch)
+cv2.imshow("sketch image",sketch)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+img2 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+
+plt.figure(figsize=(14,8))
+plt.subplot(1,2,1)
+plt.title("original image",size = 18)
+plt.imshow(img2)
+plt.axis('off')
+
+plt.subplot(1,2,2)
+plt.title("sketch",size=18)
+rgb_sketch = cv2.cvtColor(sketch,cv2.COLOR_BGR2RGB)
+plt.imshow(rgb_sketch)
+plt.axis('off')
+plt.show()
